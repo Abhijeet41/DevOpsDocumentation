@@ -1,0 +1,642 @@
+
+------------------------Coroutine Interview QNA --------------------------------
+
+1)What is coroutine?
+
+ans: Coroutines are lightweight threads you can use in android to simplify code 
+	 that executes asynchronously. coroutine helps to manage long-running task.
+	
+	advantages of coroutine
+	
+	1) Executed with in a thread 
+	
+	we can use many coroutine inside single thread 
+	
+	2)Coroutines are suspendable 
+	
+	that means we can execute some instructions and pause coroutine in middle
+	of execution and let it continue when we wanted to and that is thread 
+	cannot do.
+	
+	3) They can switch their context
+	
+	It means they can easily change the context which means that coroutine that
+	was started in one thread can easily switch other the thread.
+	
+	
+2) Why we need coroutines? and why its light-weight
+
+ans:Traditional threads are managed by the OS, heavy in terms of
+	memory (MBs per thread), and expensive to switch context.	
+	
+	Coroutines are managed by the Kotlin runtime, not the OS → they need only
+	a few KB of memory.
+	
+	While Using Rx, it requires a lot of effort to get it enough, to use it 
+	safely. On theOther hand, AsyncTasks and threads can easily introduce 
+	leaks and memory overhead.
+	
+3)How many scope in kotlin coroutine?
+
+ans: There are basically 3 scopes in kotlin coroutine
+
+	1)Global Scope 2) LifeCycle Scope 3) ViewModel Scope
+	
+	1) Global Scope: When Coroutines are launched within the global scope, 
+					 they live long as the application does.Hence it will
+					 leads to memory leak issue.
+					 
+	2)LifeCycle Scope: Lifecycle scope is the same as the global scope,
+					 but the only difference is that when we use the lifecycle 
+					 all the coroutines launched within the activity 
+					 also dies when the activity dies.
+
+	3)ViewModel Scope: It is also the same as the lifecycle scope, only 
+					   difference is that the coroutine in this scope will live 
+					   as long the view model is alive. ViewModel is a class that
+					   manages and stores  the UI-related data by following the 
+					   principles of the lifecyclesystem in android. 
+				
+
+
+4)What are Dispatchers in android?
+
+ans: Dispatchers help coroutines to decide on which  thread  work has
+	 to be done. we can passed as arguments to scope and there are 
+	 mainly 4 types of dispatchers.
+	 
+	 1)Main Dispatcher    2)IO Dispatcher 
+	 3)Default Dispatcher 4)Unconfined Dispatcher
+	 
+	 1) Main Dispatcher:
+	 
+	 It starts the coroutine in the main thread. It is mostly used when we 
+	 need to perform the UI operations within the coroutine, as UI can only
+	 be changed from the main thread(also called the UI thread).
+	 
+	 2) IO Dispatcher:
+	 
+	 Its start coroutine in the IO thread, it is used to perform all the data 
+	 operations such as networking, reading, or writing from the database.
+	 
+	 3) Default Dispatcher:
+	 
+	 Its start coroutine in the Default thread,If we are planning to do complex 
+	 and long- running application, which can block the main thread and freez 
+	 the Ui.
+	 
+	 eg you need to sort list of 10,000	elements so do that in default dispatcher
+	 so it will not block you ui thread.
+	 
+	 4) Unconfined Dispatcher:
+	 
+	 As the name suggests unconfined dispatcher is not confined to any specific
+	 thread.
+	 
+5) How to use delay function inside our main thread?
+
+ans: we can achive that with the help of runblocking. so inside runblocking
+	we will able to use delay function and we can use multiple coroutine
+	scope, these scope are executes asynchronously. 	
+		
+6) What is the difference between Launch and Async in Kotlin Coroutines?
+
+ans: The difference is that the launch{} does not return anything and the async{}
+	return instance of Deferred<T>, which has an await() function that returns the
+	result of the coroutine.
+		In other words:
+		1)launch: fire and forget 
+		2)async: perform a task and return a result.
+	 
+7) What is scope function and what are the types of scope function?
+
+ans: Kotlin, scope functions are used to execute a block of code within the scope
+	of an object.	
+	
+	Types of scope functions are
+	
+	1)let: context object: it
+		   return value: lambda result
+		   
+		The let function is frequently used for null safety calls. for null safety
+		we use safe call operator(?.) with let. It only runs the block with a non
+		null value.
+		example 
+		list.size?.let{
+			
+		}
+
+	2)apply: context object: this
+			return value: context object
+		
+		Apply with the help of this we can set values to member object. 	
+		we don't need to do this obj.Fname = "Fname" and obj.Lname = "Lname.
+	
+	3)with: context object: this
+		    return value: lambda result
+		
+		When calling functions on context objects without supplying the lambda 
+		result, ‘with' is recommended.
+	
+	4)run: Context object:  this 
+		   Return value:  lambda result	
+		   
+		The‘run' function is a combination of the ‘let' and ‘with' functions.    
+		We can use run to make null safety calls as well as other calculations.
+
+	5)also: Context object:  it
+			Return value: context object
+		
+		It's used when we need to do additional operations after the object 
+		members have been initialised.
+		   
+8) What is the open keyword in Kotlin used for?
+
+ans: By default, the classes and functions are final in Kotlin. So, you can't
+	inherit the class or override the functions.To do so, you need to use the
+	open keyword before the class and function.
+		
+9) Does Kotlin support primitive Datatypes?
+
+ans No, Kotlin does not provide support for primitive Data types like in Java.	
+	
+10)What are Higher order function in kotlin?
+
+ans: A higher-order function is a function that takes functions as parameters
+ or returns a function. For example, A function can take functions as parameters.
+
+example: 
+	fun passMeFunction(abc: () -> Unit) {
+	// I can take function
+	// do something here
+	// execute the function
+	   abc()
+	}	
+	
+11)What are extension functions in Kotlin?
+
+ans: Extension functions are like extensive properties attached to any class
+	in Kotlin. By using extension functions, you can add some methods or 
+	functionalities to an existing class even without inheriting the class.	   
+	
+12)  What are visibility modifiers in Kotlin?
+
+ans: A visibility modifier or access specifier or access modifier is a 
+	concept that is used to define the scope of something in a programming
+	language. In Kotlin, we have four visibility modifiers:	
+	
+	private: visible inside that particular class or file containing 
+			the declaration.	
+			
+	protected: visible inside that particular class or file and also 
+			 in the subclass of that particular class where it is declared.	
+
+	internal: visible everywhere in that particular module.
+	
+	public: visible to everyone.
+	
+	
+13) What are the types of constructors in Kotlin?
+
+ans: Primary constructor: These constructors are defined in the class header
+	 and you can't perform some operation in it, unlike Java's constructor.
+
+	 Secondary constructor: These constructors are declared inside the class
+	 body by using the constructor keyword.You must call the primary constructor
+	 from the secondary constructor explicitly	
+
+14)  What is the open keyword in Kotlin used for?
+
+ans: By default, the classes and functions are final in Kotlin. So, you can't
+	 inherit the class or override the functions. To do so, you need to use the
+	 open keyword before the class and function. 	
+	 
+15) What is an inline function in Kotlin?
+
+ans: Inline function instruct compiler to insert complete body of the function
+	 wherever that function got used in the code.To use an Inline function, all
+	 you need to do is just add an inline keyword at the beginning of the 
+	 function declaration.	 
+	 Advantage of inline function: Function call overhead doesn't occur. 
+	 Less overhead and faster program execution.
+
+	So, when to make the function inline and when not:
+
+	When the function code is very small, it's a good idea to make the function
+	inline.
+	When the function code is large and called from so many places, it's a bad 
+	idea to make the function inline, as the large code will be repeated again 
+	and again.
+
+16) What are lambdas expressions?
+
+ans: Lambdas expressions are anonymous functions that can be treated as values
+	 i.e. we can pass the lambdas expressions as arguments to a function return
+	 them
+	 
+	 val add : (Int, Int) -> Int = { a, b -> a + b }
+	 val result = add(9, 10)
+			 
+			 
+17) How to create a Singleton class in Kotlin?
+
+ans:A singleton class is a class that is defined in such a way that only one 
+	instance of the class can be created and is used where we need only one 
+	instance of the class like in logging, database connections, etc.		
+	object{
+		fun abc(): Abc{
+		returns
+		}
+	}
+
+18) What is suspend function in Kotlin Coroutines?
+
+ans: Suspend function is the building block of the Coroutines in Kotlin. 
+	Suspend function is a function that could be started, paused, and resume.
+	To use a suspend function, we need to use the suspend keyword in our normal
+	function definition.	
+	
+19) What is the difference between FlatMap and Map in Kotlin?
+
+ans: FlatMap is used to combine all the items of lists into one list.	
+	 Map is used to transform a list based on certain conditions.
+	 
+20) Can you explain the difference between a thread and a coroutine?
+
+ans: A thread is a unit of execution that can run independently from other threads.
+	coroutine is a light-weight thread that can be suspended and resumed.	
+	
+21) What is Elvis operator in Kotlin?
+
+ans:In Kotlin, you can assign null values to a variable by using the null safety
+	property. To check if a value is having null value then you can use if-else 
+	or can use the Elvis operator i.e. ?: 
+	
+	For example:
+
+	var name:String? = “Mindorks”
+	val nameLength = name?.length ?: -1
+	println(nameLength)	
+	
+22)What is the difference between a data class and a regular class in Kotlin?
+
+ans: A data class is a class intended to hold data. A regular class is a class 
+	that can perform arbitrary operations. Data classes are typically simpler
+	and more efficient than regular classes.
+	
+23) What is SupervisorScope	in kotlin coroutine?
+
+ans: SupervisorScope is a coroutine builder that create a new child scope
+	 and becomes a supervisor for coroutines that are launched within it.
+	 This scope is different from regular coroutine scope if a child 
+	 coroutine is fail with an exception, supervisor scope countinues to
+	 execute the remaining child coroutines insted of cancelling all of them.
+	 
+	 example
+	  suspend fun myCoroutine() {
+		supervisorScope {
+			launch {
+				// do some work
+			}
+			launch {
+				// do some other work
+			}
+		}
+	  }
+	  
+24)What is Firebase ML Kit?
+
+ans: Firebase ML Kit is a mobile SDK that makes it easier for mobile developers 
+	 to include machine learning capabilities in their applications. It consists of
+	 the following pre-built APIs.
+
+	 Text Recognition: To recognize and extract text from images.
+
+	 Face Detection: To detect faces.
+	 
+	 Object Detection and Tracking: To detect, track and classify objects 
+									in camera and static images.
+									
+	 Image Labelling: Identify objects, locations, activities, animal species,
+					  and much more.							
+
+	 Barcode scanning: Scan and process barcodes.			
+
+	 On-Device Translation: Translating text from one language to another.	
+	 
+	 Landmark recognition: Identifying popular landmarks in an image.
+
+	 Smart Reply: Generating textual replies based on previous messages.	  
+	 
+25) What is design pattern
+
+ans: Design patterns are key to creating high quality android apps that 
+	 are easy to maintain and scale
+
+	 1)Builder Pattern
+	 The Builder pattern is creational design pattern that allows you to
+	 create complex objects step by step. It seperates the construction 
+	 of an object from its representation.
+	 In android development it can be used to create complex objects like
+	 Dialogs or Notifications.
+	 
+	 example
+	 
+ class Person private constructor(val name: String, val age: Int) {
+ 
+    data class Bullder(var name: String, var age: Int = 0) {
+        fun name(name: String) = apply {
+            this.name = name
+        }
+
+        fun age(age: Int) = apply { this.age = age }
+        
+        fun build() = Person(name,age, address, phone)
+    }
+ }
+
+	val person = Person.Bullder()
+		.name("")
+		.age(30)
+		.build()
+	
+	2)Singleton class:
+	
+	Singleton class is a that class which will prevents initialization to only single
+	instance that is no matter how many time it called by any number of places from 
+	anywhere in the application it will return same instance that was created initially
+	by the class itself.
+	 
+	 object MySingleton {
+		fun doSomething() {
+		    println("Doing something...")
+	    }
+
+		var count: Int = 0
+	 }
+	 
+	-------------In Java---------------
+	
+	public class MySingleton {
+    private static MySingleton instance;
+
+    // Private constructor to prevent instantiation from outside
+    private MySingleton() {
+        // Initialization code
+    }
+
+    public static MySingleton getInstance() {
+        if (instance == null) {
+            synchronized (MySingleton.class) {
+                if (instance == null) {
+                    instance = new MySingleton();
+                }
+            }
+        }
+        return instance;
+    }
+
+    
+ }
+ 
+  3)Observer pattern:
+  
+ ans: The Observer Pattern is a behavioral design pattern that allows you to
+	  define a one-to-many dependency between objects so that when one object
+	  changes state, all its dependents are notified and updated automatically. 
+	  
+	  In Android development, it can be used to implement event-driven Ul updates
+	  or to provide a publish-subscribe mechanism for inter-component communication.
+	  
+  4)Factory Pattern:
+
+	The Factory Pattern is a creational design pattern that provides an interface for
+	creating objects in a superclass, but allows subclasses to alter the type of 
+	objects that will be created.
+	
+	In Android development, it can be used to provide a centralized API for creating
+	complex objects or to encapsulate object creation logic.
+	
+26)Explain the use case of let,run,also,apply
+
+ans:Explain the use-case of let, run, with, also, apply in Kotlin.
+	"There are five scoped functions in Kotlin: let, run, with, also and apply. 
+	Let’s go through them one by one.
+
+	But before going through these examples, let’s consider a Model class “Person”"
+	
+	class Person() {
+		var name: String = "Abcd"
+		var contactNumber: String = "1234567890"
+		var address: String = "xyz"
+	   fun displayInfo()  = print("\n Name: $name\n " +
+				"Contact Number: $contactNumber\n " +
+				"Address: $address")
+	}	
+	  
+	
+	Scoped Functions in Kotlin
+	By definition, Scoped functions are functions that execute a block of code within
+	the context of an object.  
+
+	
+	 1) let: context object: it
+		   return value: lambda result
+		   
+		The let function is frequently used for null safety calls. for null safety
+		we use safe call operator(?.) with let. It only runs the block with a non
+		null value.
+		
+		example 
+		list.size?.let{
+			
+		}
+	
+     2)apply: context object: this
+			return value: context object
+		
+		Apply with the help of this we can set values to member object. 	
+		we don't need to do this obj.Fname = "Fname" and obj.Lname = "Lname.
+
+	  	// Normal approach
+		fun createIntent(intentData: String, intentAction: String): Intent {
+			val intent = Intent()
+			intent.action = intentAction
+			intent.data = Uri.parse(intentData)
+			return intent
+		}
+
+	// Improved approach, by using apply
+		fun createIntent(intentData: String, intentAction: String) =
+			Intent().apply {
+				action = intentAction
+				data = Uri.parse(intentData)
+			}	
+		
+	 3)run: context object:this
+		The “run” operator is similar to the “let” operator in terms of accepting
+		a return value that is different from the object on which the scope function 
+		is being applied to. Hence, a “run” operator can be used to initialize an 
+		object and return the result of it.
+		
+		private fun performRunOperation() {
+			Person().run {
+				name = "Asdf"
+				contactNumber = "0987654321"
+				return@run "The details of the Person is: ${displayInfo()}"
+			}
+		}
+		
+		output:
+		 Name: Asdf
+		 Contact Number: 0987654321
+		 Address: xyz
+
+		Note : Person Object Refer from line 101
+		
+		apply vs run
+		
+		The “also” function is similar to the let functionality only in terms of 
+		referring to the context of the object as “it” and not “this” and also in
+		providing null safety checks:
+		
+		private fun performAlsoOperation() {
+			val name = Person().also { currentPerson ->
+			print("Current name is: ${currentPerson.name}\n")
+			currentPerson.name = "modifiedName"
+			}.run {
+				"Modified name is: $name\n"
+			}
+			print(name)
+		}
+		
+		output:
+		Current name is: Abcd
+		Modified name is: modifiedName
+		
+	 4)with: The “with” operator is completely similar to the run operator that we 
+			 just discussed. It also refers to the context of the object as “this”,
+			 similar to how the “run” operator uses it.	
+			 
+		with vs run:	 
+			  
+		So, if “with” is the same as “run”, what’s the difference? How should we 
+		choose between these two? 
+		
+		Now, this is an interesting case. Let’s consider a case where a Person object
+		can be nullable. 	  
+		
+		we can see that the context of the object referred to as “this” is a nullable 
+		type of Person. And hence, to correct this, we need to change the code as:	
+		
+		private fun performWithOperation() {
+			val person: Person? = null
+			with(person) {
+				this?.name = "asdf"
+				this?.contactNumber = "1234"
+				this?.address = "wasd"
+				this?.displayInfo()
+			}
+		}
+		
+		“also” vs “let”
+		
+		We can see that let accepts a return statement whereas “also” does not accept 
+		a return statement and always returns the same object which it is referring to.
+		
+27)What is Flow in kotlin?
+ans: i)Flow is a cold asynchronous data stream in kotlin. 
+	 ii)It can emit multiple values sequentially, unlike a suspend function which return 
+	    one value 		
+	 iii)Build on coroutines, so its lightweight and cancellable.
+	 
+29)What is difference between Cold flow and Hot flow?
+ans: 
+	1) Cold Flow:
+	   A cold flow starts producing values only when collected.
+	   Each collector gets its own independent stream of values.	
+	example: Netflix on-demand — every time you hit play, the show starts from
+			the beginning.  	
+	   	
+	fun coldFlow(): Flow<Int> = flow {
+    for (i in 1..3) {
+        delay(500)
+        emit(i)
+        println("Emitting $i")
+      }
+    }
+
+	fun main() = runBlocking {
+		println("Collector 1 starts")
+		coldFlow().collect { println("Collector 1 received $it") }
+
+		println("Collector 2 starts")
+		coldFlow().collect { println("Collector 2 received $it") }
+	}
+	
+	Output:
+	
+	Collector 1 starts
+	Emitting 1
+	Collector 1 received 1
+	Emitting 2
+	Collector 1 received 2
+	Emitting 3
+	Collector 1 received 3
+
+	Collector 2 starts
+	Emitting 1
+	Collector 2 received 1
+	Emitting 2
+	Collector 2 received 2
+	Emitting 3
+	Collector 2 received 3
+
+   2) Hot flow
+	  A hot flow emits values regardless of collectors.	
+	 Collectors only receive values from the moment they start collecting.
+     Example: StateFlow, SharedFlow.
+	 👉 Think of it like live TV — if you join late, you miss what was already 
+		broadcast.
+		
+	fun main() = runBlocking {
+		val stateFlow = MutableStateFlow(0)
+
+		// Collector 1
+		launch {
+			stateFlow.collect { println("Collector 1 received $it") }
+		}
+
+		delay(1000)
+		stateFlow.value = 1
+		stateFlow.value = 2
+
+		// Collector 2 joins late
+		launch {
+			stateFlow.collect { println("Collector 2 received $it") }
+		}
+
+		delay(1000)
+		stateFlow.value = 3
+	}
+	output:
+	
+	Collector 1 received 0
+	Collector 1 received 1
+	Collector 1 received 2
+	Collector 2 received 2   <-- joined late, gets latest value immediately
+	Collector 1 received 3
+	Collector 2 received 3
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
